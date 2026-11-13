@@ -1,0 +1,226 @@
+/* AstroMed — стриманий інтерфейс моніторингу */
+:root {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --surface: #111c2d;
+  --surface-raised: #162338;
+  --border: #26364d;
+  --text: #e8edf5;
+  --muted: #9aa9bd;
+  --subtle: #718198;
+  --accent: #55c7b1;
+  --blue: #75a9e8;
+  --warning: #e8b85f;
+  --danger: #e47783;
+}
+* { box-sizing: border-box; }
+html { min-height: 100%; background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #101b2b 0, var(--bg) 360px);
+  color: var(--text);
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.page { width: min(1440px, 100%); margin: 0 auto; padding: 26px 30px 34px; }
+.topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  padding: 4px 0 20px; border-bottom: 1px solid var(--border);
+}
+.brand { color: #dce8f5; font-size: 21px; font-weight: 700; letter-spacing: 1.7px; }
+.brand-mark { color: var(--accent); margin-right: 5px; }
+.subtitle { margin-top: 3px; color: var(--muted); font-size: 11px; letter-spacing: .65px; }
+.live-status { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 11px; letter-spacing: .6px; }
+.live-dot { color: var(--accent); font-size: 10px; }
+.clock { margin-left: 10px; color: var(--text); font-size: 14px; font-variant-numeric: tabular-nums; }
+.hero-strip {
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  padding: 25px 0 20px;
+}
+.eyebrow, .panel-tag { color: var(--subtle); font-size: 10px; font-weight: 700; letter-spacing: 1.15px; }
+.hero-strip h1 { margin: 5px 0 4px; color: var(--text); font-size: clamp(23px, 3vw, 30px); font-weight: 650; letter-spacing: -.5px; }
+.hero-strip p { margin: 0; color: var(--muted); font-size: 13px; }
+.system-box { min-width: 175px; padding-left: 20px; border-left: 1px solid var(--border); }
+.system-state { margin-top: 5px; font-size: 17px; font-weight: 700; }
+.state-text.normal { color: var(--accent); }
+.state-text.warning { color: var(--warning); }
+.state-text.critical { color: var(--danger); }
+.update-note { margin-top: 3px; color: var(--subtle); font-size: 11px; }
+.panel, .metric-card {
+  min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+}
+.panel { padding: 19px 20px; }
+.controls {
+  position: relative; z-index: 20; overflow: visible;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;
+  margin: 3px 0 18px; padding: 17px 19px 19px;
+}
+.control-field { position: relative; min-width: 0; }
+.control-field:focus-within { z-index: 100; }
+.control-field label {
+  display: block; margin: 0 0 7px; color: var(--muted);
+  font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+}
+/* Dash Dropdown / react-select: menu must sit above the metric cards */
+.dark-dropdown { position: relative; z-index: 1; }
+.dark-dropdown .Select-control,
+.dark-dropdown .Select__control {
+  min-height: 42px; background: #0e1929 !important; border: 1px solid #30435c !important;
+  border-radius: 7px !important; box-shadow: none !important; color: var(--text) !important;
+}
+.dark-dropdown .Select-control:hover,
+.dark-dropdown .Select__control:hover { border-color: #58718d !important; }
+.dark-dropdown .Select-value-label,
+.dark-dropdown .Select__single-value,
+.dark-dropdown .Select-placeholder,
+.dark-dropdown .Select__placeholder { color: var(--text) !important; }
+.dark-dropdown .Select-input input,
+.dark-dropdown .Select__input input { color: var(--text) !important; }
+.dark-dropdown .Select-arrow, .dark-dropdown .Select__indicator { color: var(--muted) !important; }
+.dark-dropdown .Select-menu-outer,
+.dark-dropdown .Select__menu {
+  z-index: 10000 !important; position: absolute !important; top: calc(100% + 3px) !important;
+  background: #17263a !important; border: 1px solid #3a506b !important;
+  border-radius: 7px !important; box-shadow: 0 12px 28px rgba(0,0,0,.42) !important;
+  overflow: hidden !important;
+}
+.dark-dropdown .VirtualizedSelectOption,
+.dark-dropdown .Select-option,
+.dark-dropdown .Select__option {
+  min-height: 37px; padding: 9px 12px !important; background: #17263a !important;
+  color: #e5edf7 !important; cursor: pointer;
+}
+.dark-dropdown .VirtualizedSelectFocusedOption,
+.dark-dropdown .Select-option.is-focused,
+.dark-dropdown .Select__option-- is-focused { background: #243b55 !important; }
+.dark-dropdown .Select-option.is-selected,
+.dark-dropdown .Select__option--is-selected { background: #29445d !important; color: #fff !important; }
+.metrics { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.metric-card { position: relative; padding: 18px 19px 17px; min-height: 126px; overflow: hidden; }
+.metric-label { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .85px; }
+.metric-value { display: inline-block; margin-top: 12px; color: var(--text); font-size: 29px; line-height: 1.1; font-weight: 650; font-variant-numeric: tabular-nums; }
+.metric-unit { margin-left: 7px; color: var(--muted); font-size: 11px; }
+.metric-accent { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; background: var(--accent); opacity: .8; }
+.normal .metric-value { color: var(--accent); }
+.warning .metric-value { color: var(--warning); }
+.critical .metric-value { color: var(--danger); }
+.resource-grid, .charts, .bottom-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; margin-top: 16px; }
+.charts, .bottom-grid { grid-template-columns: 1.55fr 1fr; }
+.panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 13px; }
+.panel h3 { margin: 0; color: var(--text); font-size: 15px; font-weight: 650; }
+.panel-tag { white-space: nowrap; font-size: 9px; }
+.resource-item + .resource-item { margin-top: 17px; }
+.resource-topline { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 7px; color: #d6dfeb; font-size: 12px; }
+.resource-value { color: var(--text); font-variant-numeric: tabular-nums; }
+.resource-track { height: 8px; overflow: hidden; border-radius: 20px; background: #26364b; }
+.resource-fill { height: 100%; border-radius: inherit; transition: width .8s ease; }
+.resource-note { margin-top: 5px; color: var(--subtle); font-size: 10px; }
+.alert-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(120,145,175,.13); }
+.alert-item:last-child { border-bottom: 0; }
+.alert-item p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+.alert-icon.warning { color: var(--warning); }
+.alert-icon.critical { color: var(--danger); }
+.no-alerts { display: flex; align-items: center; gap: 9px; padding: 12px 0; color: var(--muted); }
+.alert-ok { color: var(--accent); font-weight: 700; }
+.alert-system { color: var(--danger); padding: 9px 0; }
+.charts .panel, .bottom-grid .panel { overflow: hidden; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th, .data-table td { padding: 11px 9px; border-bottom: 1px solid rgba(120,145,175,.16); text-align: left; white-space: nowrap; }
+.data-table th { color: var(--muted); font-size: 10px; font-weight: 650; }
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.data-table tbody tr:hover { background: rgba(130,160,195,.055); }
+.pill { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; }
+.pill.normal { color: var(--accent); background: rgba(85,199,177,.11); }
+.pill.warning { color: var(--warning); background: rgba(232,184,95,.11); }
+.pill.critical { color: var(--danger); background: rgba(228,119,131,.11); }
+.allocation { color: var(--muted); font-size: 12px; line-height: 1.65; }
+.allocation-stat { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(120,145,175,.14); }
+.allocation-stat strong { color: var(--text); }
+.allocation h4 { margin: 15px 0 4px; color: var(--text); font-size: 12px; }
+.allocation ul { margin: 4px 0 0; padding-left: 18px; }
+.footer { display: flex; justify-content: space-between; gap: 16px; padding: 22px 2px 0; color: var(--subtle); font-size: 10px; }
+@media (max-width: 950px) {
+  .page { padding: 20px; }
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resource-grid, .charts, .bottom-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .page { padding: 14px; }
+  .topbar, .hero-strip, .footer { align-items: flex-start; flex-direction: column; }
+  .hero-strip { gap: 14px; }
+  .system-box { padding-left: 12px; }
+  .controls { grid-template-columns: 1fr; gap: 13px; }
+  .metrics { gap: 9px; }
+  .metric-card { padding: 14px; min-height: 112px; }
+  .metric-value { font-size: 24px; }
+  .panel { padding: 15px; }
+  .data-table { display: block; overflow-x: auto; }
+}
+
+/* Final polish: restrained, readable controls and dependable native menus. */
+:root {
+  --bg: #0d1522;
+  --surface: #131f30;
+  --surface-raised: #19283b;
+  --border: #2a3a50;
+  --text: #e9eef5;
+  --muted: #a4b0c0;
+  --subtle: #8291a5;
+  --accent: #61c6b4;
+  --blue: #80aee4;
+}
+body { background: #0d1522; }
+.page { padding-top: 28px; }
+.topbar { padding-bottom: 18px; }
+.brand { letter-spacing: 1.1px; }
+.subtitle { letter-spacing: .25px; text-transform: none; }
+.hero-strip { padding: 28px 0 23px; }
+.eyebrow, .panel-tag { letter-spacing: .7px; }
+.hero-strip h1 { letter-spacing: -.7px; font-weight: 620; }
+.panel, .metric-card { background: #131f30; border-color: #2a3a50; border-radius: 12px; box-shadow: 0 5px 18px rgba(0,0,0,.10); }
+.panel { padding: 21px 22px; }
+.controls { position: relative; z-index: 30; overflow: visible !important; isolation: isolate; margin-bottom: 18px; }
+.control-field { position: relative; min-width: 0; }
+.control-field label { color: #aab6c6; font-size: 10px; letter-spacing: .55px; text-transform: uppercase; }
+.native-select {
+  display: block; width: 100%; min-height: 43px; padding: 0 38px 0 12px;
+  border: 1px solid #34475f; border-radius: 8px; outline: none;
+  background-color: #101b2a; color: #e9eef5; color-scheme: dark;
+  font: inherit; font-size: 14px; cursor: pointer;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+.native-select:hover { border-color: #60758e; background-color: #142236; }
+.native-select:focus { border-color: #61c6b4; box-shadow: 0 0 0 3px rgba(97,198,180,.13); }
+.native-select option { background: #172538; color: #e9eef5; }
+.metrics { position: relative; z-index: 0; }
+.metric-card { min-height: 132px; padding: 20px; }
+.metric-label { letter-spacing: .55px; }
+.metric-value { font-weight: 620; }
+.metric-accent { height: 2px; opacity: .65; }
+.panel h3 { font-weight: 620; }
+.resource-track { height: 7px; background: #29394d; }
+.footer { border-top: 1px solid rgba(130,150,175,.14); margin-top: 22px; }
+@media (max-width: 720px) {
+  .controls { grid-template-columns: 1fr; }
+  .hero-strip { align-items: flex-start; }
+}
+
+/* Dropdown menus: visible above neighbouring panels and reliably clickable */
+.controls { position: relative; z-index: 50; overflow: visible !important; }
+.control-field { position: relative; min-width: 0; }
+.control-field:focus-within { z-index: 1000; }
+.dark-dropdown { position: relative; width: 100%; color: #e9eef5; }
+.dark-dropdown .Select-control,
+.dark-dropdown .Select__control { min-height: 42px; background: #101b2a !important; border: 1px solid #34475f !important; border-radius: 8px !important; box-shadow: none !important; }
+.dark-dropdown .Select-control:hover,
+.dark-dropdown .Select__control:hover { border-color: #61c6b4 !important; }
+.dark-dropdown .Select-value-label, .dark-dropdown .Select__single-value,
+.dark-dropdown .Select-placeholder, .dark-dropdown .Select__placeholder,
+.dark-dropdown .Select__input input { color: #e9eef5 !important; }
+.dark-dropdown .Select-menu-outer, .dark-dropdown .Select__menu { z-index: 2000 !important; background: #172538 !important; border: 1px solid #34475f !important; color: #e9eef5 !important; }
+.dark-dropdown .Select-option, .dark-dropdown .Select__option { background: #172538 !important; color: #e9eef5 !important; cursor: pointer !important; }
+.dark-dropdown .Select-option.is-focused, .dark-dropdown .Select__option--is-focused { background: #263c55 !important; }
+.dark-dropdown .Select-option.is-selected, .dark-dropdown .Select__option--is-selected { background: #1e4b50 !important; color: #fff !important; }
+.dark-dropdown .Select__indicators, .dark-dropdown .Select__indicator { color: #aab6c6 !important; }
